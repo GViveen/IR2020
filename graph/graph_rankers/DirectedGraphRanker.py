@@ -9,8 +9,6 @@ from tqdm import tqdm
 class DirectedGraphRanker(InformalGraphRankerInterface):
     score_dict = {}
     step_dict = {}
-    outdegree_dict = {}
-    indegree_dict = {}
     def rank(self, nodes, edges) -> dict:   
         d = 0.85  # damping coefficient, usually is .85
         min_diff = 1e-2  # convergence threshold
