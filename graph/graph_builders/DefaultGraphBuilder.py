@@ -4,11 +4,11 @@ import numpy as np
 from scipy.spatial import distance
 import json
 
-from bglinking.database_utils import db_utils as db_utils
-from bglinking.general_utils import utils
+from database_utils import db_utils as db_utils
+from general_utils import utils
 
-from bglinking.graph.Node import Node
-from bglinking.graph.graph_builders.InformalGraphBuilderInterface import InformalGraphBuilderInterface
+from graph.Node import Node
+from graph.graph_builders.InformalGraphBuilderInterface import InformalGraphBuilderInterface
 
 
 class DefaultGraphBuilder(InformalGraphBuilderInterface):
@@ -75,17 +75,7 @@ class DefaultGraphBuilder(InformalGraphBuilderInterface):
             for other_node_key in graph.nodes.keys():
                 if node_key == other_node_key:
                     continue
-
-                weight = 0.0
-                if text_distance > 0:
-                    distance = closest_distance(
-                        graph.nodes[node_key], graph.nodes[other_node_key])
-                    weight += text_distance * distance_in_text(distance)
-
-                if term_embedding > 0:
-                    weight += term_embedding * edge_embedding_weight(
-                        graph.nodes[node_key], graph.nodes[other_node_key], embeddings, embeddings_not_found)
-
+                weight = 1
                 # If node A and B are in the same paragraph, make A <=> B
                 if graph.same_paragraph(graph.nodes[node_key], graph.nodes[other_node_key]):
                     graph.add_edge(node_key, other_node_key, weight)

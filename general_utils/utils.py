@@ -13,8 +13,8 @@ from tqdm import tqdm
 from bs4 import BeautifulSoup
 from typing import Callable
 
-from bglinking.database_utils import db_utils
-from bglinking.general_utils.str_to_dict import turn_into_dict
+from database_utils import db_utils
+from general_utils.str_to_dict import turn_into_dict
 
 from pyserini import analysis
 from pyserini.analysis import get_lucene_analyzer

@@ -4,8 +4,8 @@ from collections import defaultdict
 import operator
 import warnings
 
-from bglinking.general_utils import utils
-from bglinking.graph.graph_comparators.InformalGraphComparatorInterface import InformalGraphComparatorInterface
+from general_utils import utils
+from graph.graph_comparators.InformalGraphComparatorInterface import InformalGraphComparatorInterface
 
 
 class GMCSComparator(InformalGraphComparatorInterface): 

@@ -4,8 +4,8 @@ from collections import defaultdict
 import operator
 import warnings
 
-from bglinking.general_utils import utils
-from bglinking.graph.graph_comparators.InformalGraphComparatorInterface import InformalGraphComparatorInterface
+from general_utils import utils
+from graph.graph_comparators.InformalGraphComparatorInterface import InformalGraphComparatorInterface
 
 
 class DCoreComparator(InformalGraphComparatorInterface):
@@ -78,10 +78,10 @@ class DCoreComparator(InformalGraphComparatorInterface):
                         node_name in nodes_b.keys()}
         common_edges = {edge: weight for edge, weight in edges_a.items() if edge in edges_b.keys()}
 
-        similarity_score = (1 - novelty_percentage) * self.similarity(nodes_a, edges_a, nodes_b, edges_b, common_nodes,
+        similarity_score = self.similarity(nodes_a, edges_a, nodes_b, edges_b, common_nodes,
                                                                       common_edges, node_edge_l)
 
         novelty_score, diversity_type = self.novelty(graph_b, graph_a, common_nodes)
         novelty_score = float(novelty_percentage * novelty_score)
-       # print("result of comparison", similarity_weight * similarity_score + novelty_weight * novelty_score)
+        # print("result of comparison", similarity_weight * similarity_score + novelty_weight * novelty_score)
         return similarity_weight * similarity_score + novelty_weight * novelty_score, diversity_type

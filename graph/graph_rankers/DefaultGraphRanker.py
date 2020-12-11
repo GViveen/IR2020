@@ -1,8 +1,8 @@
 import numpy as np
 from collections import defaultdict
 
-from bglinking.general_utils import utils
-from bglinking.graph.graph_rankers.InformalGraphRankerInterface import InformalGraphRankerInterface
+from general_utils import utils
+from graph.graph_rankers.InformalGraphRankerInterface import InformalGraphRankerInterface
 
 # Modified from https://github.com/BrambleXu/news-graph
 
@@ -20,7 +20,9 @@ class DefaultGraphRanker(InformalGraphRankerInterface):
             nodeweight_dict[node.name] = weight_default #node.weight 
              # Sum of all edges leaving a specific node
             outsum_node_dict[node.name] = sum((edges[edge_key] for edge_key in edges.keys() if node.name in edge_key))
-        
+
+
+
         sorted_keys = sorted([node_name for node_name in nodes.keys()]) # save node name as a list for iteration
         step_dict = [0]
         for step in range(1, steps):
@@ -49,3 +51,11 @@ class DefaultGraphRanker(InformalGraphRankerInterface):
             node.weight = nodeweight_dict[node.name]
 
         #return nodeweight_dict
+
+    def outdegree(self, node, edges):
+        """Return the number of edges where ending edge == node"""
+        return len([n for n in edges if n[0] == node.name])
+
+    def indegree(self, node, edges):
+        """Return the number of edges where ending edge == node"""
+        return len([n for n in edges if n[1] == node.name])

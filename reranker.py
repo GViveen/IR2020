@@ -10,10 +10,10 @@ from pyserini import search
 from pyserini import index
 from pyserini import analysis
 
-from bglinking.general_utils import utils
-from bglinking.database_utils import db_utils
-from bglinking.graph.graph import Graph
-from bglinking.graph.graph_comparators.DCoreComparator import DCoreComparator
+from general_utils import utils
+from database_utils import db_utils
+from graph.graph import Graph
+from graph.graph_comparators.DCoreComparator import DCoreComparator
 
 
 parser = argparse.ArgumentParser()
@@ -50,16 +50,16 @@ parser.add_argument('--run-tag', dest='run_tag', default='unspecified_run_tag',
 parser.add_argument('--anserini', dest='anserini', default='/Volumes/Samsung_T5/anserini',
                     help='path to anserini')
 
-parser.add_argument('--textrank', dest='textrank', default=False, action='store_true',
+parser.add_argument('--textrank', dest='textrank', default=True, action='store_true',
                     help='Apply TextRank')
 
-parser.add_argument('--use-entities', dest='use_entities', default=False, action='store_true',
+parser.add_argument('--use-entities', dest='use_entities', default=True, action='store_true',
                     help='Use named entities as graph nodes')
 
-parser.add_argument('--nr-terms', dest='nr_terms', default=100, type=int,
+parser.add_argument('--nr-terms', dest='nr_terms', default=20, type=int,
                     help='Number of tfidf terms to include in graph')
 
-parser.add_argument('--term-tfidf', dest='term_tfidf', default=1.0, type=float,
+parser.add_argument('--term-tfidf', dest='term_tfidf', default=0.0, type=float,
                     help='Weight that should be assigned to tfidf score of terms (for node initialization)')
 
 parser.add_argument('--term-position', dest='term_position', default=0.0, type=float,
@@ -74,7 +74,7 @@ parser.add_argument('--text-distance', dest='text_distance', default=0.2, type=f
 parser.add_argument('--l', dest='node_edge_l', default=0.5, type=float,
                     help='Weight for importance nodes over edges')
 
-parser.add_argument('--novelty', dest='novelty', default=1.0, type=float,
+parser.add_argument('--novelty', dest='novelty', default=0.8, type=float,
                     help='Weight for novelty in relevance score')
 
 parser.add_argument('--diversify', dest='diversify', default=False, action='store_true',
@@ -138,7 +138,7 @@ for topic_num, topic in tqdm(topics):  # tqdm(topics.items()):
 
     query_graph = Graph(query_id, f'query_article_{query_num}')
     query_graph.build(**build_arguments)
-    query_graph.trim(10, 5)                       # Vary trim parameter here
+    query_graph.trim(6, 3)                       # Vary trim parameter here
     # recalculate node weights using TextRank
     if args.textrank:
         query_graph.rank()
@@ -159,7 +159,7 @@ for topic_num, topic in tqdm(topics):  # tqdm(topics.items()):
 
         # Build (initialize) graph nodes and edges.
         candidate_graph.build(**build_arguments)
-
+        query_graph.trim(6, 3)
         # recalculate node weights using TextRank
         if args.textrank:
             candidate_graph.rank()
