@@ -1,14 +1,12 @@
 import sys
 from collections import defaultdict
 import numpy as np
-from bglinking.general_utils import utils
 
-from bglinking.graph.graph_builders.DefaultGraphBuilder import DefaultGraphBuilder
-from bglinking.graph.graph_builders.DirectedBuilder import DirectedBuilder
-from bglinking.graph.graph_rankers.DefaultGraphRanker import DefaultGraphRanker
-from bglinking.graph.graph_rankers.DirectedGraphRanker import DirectedGraphRanker
-from bglinking.graph.graph_comparators.GMCSComparator import GMCSComparator
-from bglinking.graph.graph_comparators.DCoreComparator import DCoreComparator
+from graph.graph_builders.DefaultGraphBuilder import DefaultGraphBuilder
+from graph.graph_builders.DirectedBuilder import DirectedBuilder
+from graph.graph_rankers.DirectedGraphRanker import DirectedGraphRanker
+from graph.graph_comparators.GMCSComparator import GMCSComparator
+from graph.graph_comparators.DCoreComparator import DCoreComparator
 # [modified] MIT license bramblu
 
 

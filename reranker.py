@@ -56,7 +56,7 @@ parser.add_argument('--textrank', dest='textrank', default=True, action='store_t
 parser.add_argument('--use-entities', dest='use_entities', default=True, action='store_true',
                     help='Use named entities as graph nodes')
 
-parser.add_argument('--nr-terms', dest='nr_terms', default=20, type=int,
+parser.add_argument('--nr-terms', dest='nr_terms', default=100, type=int,
                     help='Number of tfidf terms to include in graph')
 
 parser.add_argument('--term-tfidf', dest='term_tfidf', default=0.0, type=float,
@@ -138,7 +138,7 @@ for topic_num, topic in tqdm(topics):  # tqdm(topics.items()):
 
     query_graph = Graph(query_id, f'query_article_{query_num}')
     query_graph.build(**build_arguments)
-    query_graph.trim(6, 3)                       # Vary trim parameter here
+    query_graph.trim(15, 8)                       # Vary trim parameter here
     # recalculate node weights using TextRank
     if args.textrank:
         query_graph.rank()

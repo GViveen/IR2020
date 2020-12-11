@@ -2,11 +2,11 @@ import numpy as np
 from scipy.spatial import distance
 import json
 
-from bglinking.database_utils import db_utils as db_utils
-from bglinking.general_utils import utils
+from database_utils import db_utils as db_utils
+from general_utils import utils
 
-from bglinking.graph.Node import Node
-from bglinking.graph.graph_builders.InformalGraphBuilderInterface import InformalGraphBuilderInterface
+from graph.Node import Node
+from graph.graph_builders.InformalGraphBuilderInterface import InformalGraphBuilderInterface
 
 
 class DefaultGraphBuilder(InformalGraphBuilderInterface):
