@@ -1,3 +1,5 @@
+import copy
+
 import numpy as np
 from scipy.spatial import distance
 import json
@@ -10,7 +12,7 @@ from bglinking.graph.graph_builders.InformalGraphBuilderInterface import Informa
 
 
 class DefaultGraphBuilder(InformalGraphBuilderInterface):
-    def build(self, graph, cursor, embeddings, index_utils, docid, use_entities, nr_terms=0, term_tfidf=0.0, term_position=0.0, text_distance=0.0, term_embedding=0.0):
+    def build(self, graph, cursor, embeddings, index_utils, docid, use_entities, nr_terms=0, term_tfidf=0.0, term_position=0.0, text_distance=0.0, term_embedding=0.0, direction='backward'):
         # Retrieve named entities from database.
         if use_entities:
             entities = db_utils.get_entities_from_docid(
@@ -84,8 +86,32 @@ class DefaultGraphBuilder(InformalGraphBuilderInterface):
                     weight += term_embedding * edge_embedding_weight(
                         graph.nodes[node_key], graph.nodes[other_node_key], embeddings, embeddings_not_found)
 
+                # If node A and B are in the same paragraph, make A <=> B
+                if graph.same_paragraph(graph.nodes[node_key], graph.nodes[other_node_key]):
+                    graph.add_edge(node_key, other_node_key, weight)
+                    graph.add_edge(other_node_key, node_key, weight)
+
+                # If node B is in the paragraph following node A, make A -> B (forward) or A <- B (backward)
+                elif graph.subsequent_paragraph(graph.nodes[node_key], graph.nodes[other_node_key]):
+                    if direction == 'forward':
+                        graph.add_edge(node_key, other_node_key, weight)
+                    elif direction == 'backward':
+                        graph.add_edge(other_node_key, node_key, weight)
+
                 if weight > 0.0:
                     graph.add_edge(node_key, other_node_key, weight)
+
+    def trim(self, digraph, k, l):
+        """ Trim the digraph based on the D-core algorithm.
+        k = indegree, l = outdegree"""
+        dcore = digraph
+        smaller_k_l = [node for node in list(dcore.nodes.values()) if dcore.get_degree(node) < (k, l)]
+        while smaller_k_l:
+            for node in smaller_k_l:
+                dcore.remove_node(node)
+            smaller_k_l = [node for node in list(dcore.nodes.values()) if dcore.get_degree(node) < (k, l)]
+
+
 
 
 def tf_func(node, N: int) -> float:
