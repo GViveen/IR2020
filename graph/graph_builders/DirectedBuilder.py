@@ -11,7 +11,7 @@ from bglinking.graph.Node import Node
 from bglinking.graph.graph_builders.InformalGraphBuilderInterface import InformalGraphBuilderInterface
 
 
-class DefaultGraphBuilder(InformalGraphBuilderInterface):
+class DirectedBuilder(InformalGraphBuilderInterface):
     def build(self, graph, cursor, embeddings, index_utils, docid, use_entities, nr_terms=0, term_tfidf=0.0, term_position=0.0, text_distance=0.0, term_embedding=0.0, direction='backward'):
         # Retrieve named entities from database.
         if use_entities:

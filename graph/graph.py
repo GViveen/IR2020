@@ -4,6 +4,7 @@ import numpy as np
 from bglinking.general_utils import utils
 
 from bglinking.graph.graph_builders.DefaultGraphBuilder import DefaultGraphBuilder
+from bglinking.graph.graph_builders.DirectedBuilder import DirectedBuilder
 from bglinking.graph.graph_rankers.DefaultGraphRanker import DefaultGraphRanker
 from bglinking.graph.graph_comparators.GMCSComparator import GMCSComparator
 from bglinking.graph.graph_comparators.DCoreComparator import DCoreComparator
@@ -17,7 +18,7 @@ class Graph:
         self.__nodes = {}  # {name: NodeObj1, name: NodeObj2, ...]
         self.__edges = defaultdict(float)  # {(A, B): weight}
 
-        self.graph_builder = DefaultGraphBuilder()
+        self.graph_builder = DirectedBuilder()
         self.graph_ranker = DefaultGraphRanker()
         self.graph_comparator = DCoreComparator()
 
