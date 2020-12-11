@@ -1,12 +1,13 @@
 import sys
 from collections import defaultdict
 import numpy as np
-from general_utils import utils
+from bglinking.general_utils import utils
 
-from graph.graph_builders.DefaultGraphBuilder import DefaultGraphBuilder
-from graph.graph_rankers.DirectedGraphRanker import DirectedGraphRanker
-from graph.graph_comparators.GMCSComparator import GMCSComparator
-from graph.graph_comparators.DCoreComparator import DCoreComparator
+from bglinking.graph.graph_builders.DefaultGraphBuilder import DefaultGraphBuilder
+from bglinking.graph.graph_builders.DirectedBuilder import DirectedBuilder
+from bglinking.graph.graph_rankers.DefaultGraphRanker import DefaultGraphRanker
+from bglinking.graph.graph_comparators.GMCSComparator import GMCSComparator
+from bglinking.graph.graph_comparators.DCoreComparator import DCoreComparator
 # [modified] MIT license bramblu
 
 
@@ -17,8 +18,8 @@ class Graph:
         self.__nodes = {}  # {name: NodeObj1, name: NodeObj2, ...]
         self.__edges = defaultdict(float)  # {(A, B): weight}
 
-        self.graph_builder = DefaultGraphBuilder()
-        self.graph_ranker = DirectedGraphRanker()
+        self.graph_builder = DirectedBuilder()
+        self.graph_ranker = DefaultGraphRanker()
         self.graph_comparator = DCoreComparator()
 
         self.docid = docid
@@ -84,7 +85,10 @@ class Graph:
     def add_edge(self, start, end, weight):
         """Add edge between node"""
         # Store edge with nodes in alphabetical order.
-        self.__edges[(start, end)] = weight
+        if start[0] < end[0]:
+            self.__edges[(start, end)] = weight
+        else:
+            self.__edges[(end, start)] = weight
 
     def set_graph_builder(self, graph_builder):
         self.graph_builder = graph_builder
