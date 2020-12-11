@@ -24,7 +24,7 @@ class DirectedGraphRanker(InformalGraphRankerInterface):
                 self.score(node, edges, step, steps)
                 step_tuple[0] = step_tuple[1]
                 step_tuple[1] = sum(nodeweight_dict.values())
-                if abs(step_tuple[step] - step_tuple[step - 1]) <= min_diff:
+                if abs(step_tuple[1] - step_tuple[0]) <= min_diff:
                     break
 
         # Normalize and Standardization
