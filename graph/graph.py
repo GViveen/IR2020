@@ -6,6 +6,7 @@ from bglinking.general_utils import utils
 from bglinking.graph.graph_builders.DefaultGraphBuilder import DefaultGraphBuilder
 from bglinking.graph.graph_builders.DirectedBuilder import DirectedBuilder
 from bglinking.graph.graph_rankers.DefaultGraphRanker import DefaultGraphRanker
+from bglinking.graph.graph_rankers.DirectedGraphRanker import DirectedGraphRanker
 from bglinking.graph.graph_comparators.GMCSComparator import GMCSComparator
 from bglinking.graph.graph_comparators.DCoreComparator import DCoreComparator
 # [modified] MIT license bramblu
@@ -19,7 +20,7 @@ class Graph:
         self.__edges = defaultdict(float)  # {(A, B): weight}
 
         self.graph_builder = DirectedBuilder()
-        self.graph_ranker = DefaultGraphRanker()
+        self.graph_ranker = DirectedGraphRanker()
         self.graph_comparator = DCoreComparator()
 
         self.docid = docid

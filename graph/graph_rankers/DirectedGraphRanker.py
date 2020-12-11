@@ -15,16 +15,16 @@ class DirectedGraphRanker(InformalGraphRankerInterface):
         steps = 1000 # iteration steps
         weight_default = 1.0 / (len(nodes.keys()) or 1.0)
 
-        self.score_dict = {k: 0 for k in list(nodes)}
+        self.score_dict = {k: weight_default for k in list(nodes)}
         nodeweight_dict = defaultdict(float) # store weight of node
-        sum_node_dict = defaultdict(float) # store weight of out nodes
-        step_list = []
+        step_tuple = (1000, 0)
 
         for step in range(steps):
             for node in list(nodes):
                 self.score(node, edges, step, steps)
-                step_list.append(sum(nodeweight_dict.values()))
-                if abs(step_list[step] - step_list[step - 1]) <= min_diff:
+                step_tuple[0] = step_tuple[1]
+                step_tuple[1] = sum(nodeweight_dict.values())
+                if abs(step_tuple[step] - step_tuple[step - 1]) <= min_diff:
                     break
 
         # Normalize and Standardization
@@ -53,7 +53,7 @@ class DirectedGraphRanker(InformalGraphRankerInterface):
         return len([n for n in edges if n[0] == node])
 
     def outdegree_nodes(self, node, edges):
-        """Return the number of edges where start == node"""
+        """Return a list of edges where start == node"""
         return [n for n in edges if n[0] == node]
 
     def indegree(self, node, edges):
@@ -61,5 +61,5 @@ class DirectedGraphRanker(InformalGraphRankerInterface):
         return len([n for n in edges if n[1] == node])
 
     def indegree_nodes(self, node, edges):
-        """Return the number of edges where end == node"""
+        """Return a list of edges where end == node"""
         return [n for n in edges if n[1] == node]
