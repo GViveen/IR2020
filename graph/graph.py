@@ -84,10 +84,7 @@ class Graph:
     def add_edge(self, start, end, weight):
         """Add edge between node"""
         # Store edge with nodes in alphabetical order.
-        if start[0] < end[0]:
-            self.__edges[(start, end)] = weight
-        else:
-            self.__edges[(end, start)] = weight
+        self.__edges[(start, end)] = weight
 
     def set_graph_builder(self, graph_builder):
         self.graph_builder = graph_builder

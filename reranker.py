@@ -138,7 +138,7 @@ for topic_num, topic in tqdm(topics):  # tqdm(topics.items()):
 
     query_graph = Graph(query_id, f'query_article_{query_num}')
     query_graph.build(**build_arguments)
-    query_graph.trim(15, 8)                       # Vary trim parameter here
+    query_graph.trim(len(query_graph.edges)/len(query_graph.nodes)/4,  len(query_graph.edges)/len(query_graph.nodes)/8)       # Vary trim parameter here
     # recalculate node weights using TextRank
     if args.textrank:
         query_graph.rank()

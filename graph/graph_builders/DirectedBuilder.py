@@ -76,7 +76,7 @@ class DirectedBuilder(InformalGraphBuilderInterface):
                 if node_key == other_node_key:
                     continue
 
-                weight = 0.0
+                weight = 1.0
                 if text_distance > 0:
                     distance = closest_distance(
                         graph.nodes[node_key], graph.nodes[other_node_key])
@@ -98,8 +98,8 @@ class DirectedBuilder(InformalGraphBuilderInterface):
                     elif direction == 'backward':
                         graph.add_edge(other_node_key, node_key, weight)
 
-                if weight > 0.0:
-                    graph.add_edge(node_key, other_node_key, weight)
+                # if weight > 0.0:
+                #     graph.add_edge(node_key, other_node_key, weight)
 
     def trim(self, digraph, k, l):
         """ Trim the digraph based on the D-core algorithm.

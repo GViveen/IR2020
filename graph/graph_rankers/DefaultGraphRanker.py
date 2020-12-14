@@ -21,7 +21,7 @@ class DefaultGraphRanker(InformalGraphRankerInterface):
              # Sum of all edges leaving a specific node
             outsum_node_dict[node.name] = sum((edges[edge_key] for edge_key in edges.keys() if node.name in edge_key))
 
-        print(edges)
+        #print(edges)
 
         sorted_keys = sorted([node_name for node_name in nodes.keys()]) # save node name as a list for iteration
         step_dict = [0]
