@@ -56,7 +56,7 @@ parser.add_argument('--textrank', dest='textrank', default=True, action='store_t
 parser.add_argument('--use-entities', dest='use_entities', default=False, action='store_true',
                     help='Use named entities as graph nodes')
 
-parser.add_argument('--nr-terms', dest='nr_terms', default=100, type=int,
+parser.add_argument('--nr-terms', dest='nr_terms', default=50, type=int,
                     help='Number of tfidf terms to include in graph')
 
 parser.add_argument('--term-tfidf', dest='term_tfidf', default=0.0, type=float,
@@ -65,10 +65,10 @@ parser.add_argument('--term-tfidf', dest='term_tfidf', default=0.0, type=float,
 parser.add_argument('--term-position', dest='term_position', default=0.0, type=float,
                     help='Weight for term position in initial node weight')
 
-parser.add_argument('--term-embedding', dest='term_embedding', default=0.2, type=float,
+parser.add_argument('--term-embedding', dest='term_embedding', default=0.0, type=float,
                     help='Weight for word embeddings in edge creation')
 
-parser.add_argument('--text-distance', dest='text_distance', default=0.2, type=float,
+parser.add_argument('--text-distance', dest='text_distance', default=0.0, type=float,
                     help='Weight for text distance in edge creation')
 
 parser.add_argument('--l', dest='node_edge_l', default=0.5, type=float,
