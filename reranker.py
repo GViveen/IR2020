@@ -35,7 +35,7 @@ parser.add_argument('--year', dest='year', default=19, type=int,
 parser.add_argument('--topics', dest='topics', default='topics.backgroundlinking19.txt',
                     help='specify qrels file')
 
-parser.add_argument('--candidates', dest='candidates', default='run.backgroundlinking20.bm25+rm3.topics.backgroundlinking20.txt',
+parser.add_argument('--candidates', dest='candidates', default='run.backgroundlinking19.bm25+rm3.topics.backgroundlinking19.txt',
                     help='Results file that carries candidate docs')
 
 parser.add_argument('--qrels', dest='qrels', default='qrels.backgroundlinking19.txt',
