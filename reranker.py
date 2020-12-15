@@ -53,7 +53,7 @@ parser.add_argument('--anserini', dest='anserini', default='/Volumes/Samsung_T5/
 parser.add_argument('--textrank', dest='textrank', default=True, action='store_true',
                     help='Apply TextRank')
 
-parser.add_argument('--use-entities', dest='use_entities', default=True, action='store_true',
+parser.add_argument('--use-entities', dest='use_entities', default=False, action='store_true',
                     help='Use named entities as graph nodes')
 
 parser.add_argument('--nr-terms', dest='nr_terms', default=100, type=int,
@@ -79,6 +79,10 @@ parser.add_argument('--novelty', dest='novelty', default=0.8, type=float,
 
 parser.add_argument('--diversify', dest='diversify', default=False, action='store_true',
                     help='Diversify the results according to entity types')
+
+parser.add_argument('--d-core-k', dest='d_core_k', default = 6, type=int, help="Set d-core parameter k")
+
+parser.add_argument('--d-core-l', dest='d_core_l', default = 3, type=int, help="Set d-core parameter l")
 
 args = parser.parse_args()
 #utils.write_run_arguments_to_log(**vars(args))
@@ -138,7 +142,7 @@ for topic_num, topic in tqdm(topics):  # tqdm(topics.items()):
 
     query_graph = Graph(query_id, f'query_article_{query_num}')
     query_graph.build(**build_arguments)
-    query_graph.trim(len(query_graph.edges)/len(query_graph.nodes)/4,  len(query_graph.edges)/len(query_graph.nodes)/8)       # Vary trim parameter here
+    query_graph.trim(args.d_core_k, args.d_core_l)       # Vary trim parameter here
     # recalculate node weights using TextRank
     if args.textrank:
         query_graph.rank()
