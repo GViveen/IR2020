@@ -74,7 +74,7 @@ parser.add_argument('--text-distance', dest='text_distance', default=0.2, type=f
 parser.add_argument('--l', dest='node_edge_l', default=0.5, type=float,
                     help='Weight for importance nodes over edges')
 
-parser.add_argument('--novelty', dest='novelty', default=0.8, type=float,
+parser.add_argument('--novelty', dest='novelty', default=0.5, type=float,
                     help='Weight for novelty in relevance score')
 
 parser.add_argument('--diversify', dest='diversify', default=False, action='store_true',
@@ -83,6 +83,8 @@ parser.add_argument('--diversify', dest='diversify', default=False, action='stor
 parser.add_argument('--d-core-k', dest='d_core_k', default = 6, type=int, help="Set d-core parameter k")
 
 parser.add_argument('--d-core-l', dest='d_core_l', default = 3, type=int, help="Set d-core parameter l")
+
+parser.add_argument('--direction', dest='direction', default = 'forward', help="Set edge direction between paragraphs")
 
 args = parser.parse_args()
 #utils.write_run_arguments_to_log(**vars(args))
@@ -130,7 +132,8 @@ build_arguments = {'index_utils': index_utils,
                    'term_tfidf': args.term_tfidf,
                    'term_position': args.term_position,
                    'text_distance': args.text_distance,
-                   'term_embedding': args.term_embedding}
+                   'term_embedding': args.term_embedding,
+                   'direction': args.direction}
 
 # Read in topics via Pyserini.
 topics = utils.read_topics_and_ids_from_file(
@@ -163,7 +166,7 @@ for topic_num, topic in tqdm(topics):  # tqdm(topics.items()):
 
         # Build (initialize) graph nodes and edges.
         candidate_graph.build(**build_arguments)
-        query_graph.trim(6, 3)
+        query_graph.trim(args.d_core_k, args.d_core_l)
         # recalculate node weights using TextRank
         if args.textrank:
             candidate_graph.rank()

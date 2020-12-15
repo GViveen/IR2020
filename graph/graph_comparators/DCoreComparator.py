@@ -61,7 +61,7 @@ class DCoreComparator(InformalGraphComparatorInterface):
         novelty = total_indegree / total_weight
         return novelty, utils.get_keys_max_values(additional_distributions)
 
-    def compare(self, graph_a, graph_b, novelty_percentage, node_edge_l=0.5, novelty_weight=0.9, similarity_weight=0.1) -> (float, float):
+    def compare(self, graph_a, graph_b, novelty_percentage, node_edge_l=0.5, similarity_weight=0.1) -> (float, float):
         """ Compare graph A with graph B and calculate similarity score.
 
         Returns
@@ -84,4 +84,4 @@ class DCoreComparator(InformalGraphComparatorInterface):
         novelty_score, diversity_type = self.novelty(graph_b, graph_a, common_nodes)
         novelty_score = float(novelty_percentage * novelty_score)
         # print("result of comparison", similarity_weight * similarity_score + novelty_weight * novelty_score)
-        return similarity_weight * similarity_score + novelty_weight * novelty_score, diversity_type
+        return similarity_weight * similarity_score + novelty_score, diversity_type
