@@ -56,7 +56,7 @@ parser.add_argument('--textrank', dest='textrank', default=True, action='store_t
 parser.add_argument('--use-entities', dest='use_entities', default=False, action='store_true',
                     help='Use named entities as graph nodes')
 
-parser.add_argument('--nr-terms', dest='nr_terms', default=50, type=int,
+parser.add_argument('--nr-terms', dest='nr_terms', default=100, type=int,
                     help='Number of tfidf terms to include in graph')
 
 parser.add_argument('--term-tfidf', dest='term_tfidf', default=0.0, type=float,
@@ -80,9 +80,9 @@ parser.add_argument('--novelty', dest='novelty', default=0.5, type=float,
 parser.add_argument('--diversify', dest='diversify', default=False, action='store_true',
                     help='Diversify the results according to entity types')
 
-parser.add_argument('--d-core-k', dest='d_core_k', default = 6, type=int, help="Set d-core parameter k")
+parser.add_argument('--d-core-k', dest='d_core_k', default = 0.5, type=float, help="Set d-core parameter k")
 
-parser.add_argument('--d-core-l', dest='d_core_l', default = 3, type=int, help="Set d-core parameter l")
+parser.add_argument('--d-core-l', dest='d_core_l', default = 0.5, type=float, help="Set d-core parameter l")
 
 parser.add_argument('--direction', dest='direction', default = 'forward', help="Set edge direction between paragraphs")
 
@@ -135,6 +135,10 @@ build_arguments = {'index_utils': index_utils,
                    'term_embedding': args.term_embedding,
                    'direction': args.direction}
 
+# Calculate absolute k and l
+d_core_k = round(args.d_core_k * args.nr_terms)
+d_core_l = round(args.d_core_l * args.nr_terms)
+
 # Read in topics via Pyserini.
 topics = utils.read_topics_and_ids_from_file(
     f'resources/topics-and-qrels/{args.topics}')
@@ -145,7 +149,7 @@ for topic_num, topic in tqdm(topics):  # tqdm(topics.items()):
 
     query_graph = Graph(query_id, f'query_article_{query_num}')
     query_graph.build(**build_arguments)
-    query_graph.trim(args.d_core_k, args.d_core_l)       # Vary trim parameter here
+    query_graph.trim(d_core_k, d_core_l)       # Vary trim parameter here
     # recalculate node weights using TextRank
     if args.textrank:
         query_graph.rank()
@@ -166,7 +170,7 @@ for topic_num, topic in tqdm(topics):  # tqdm(topics.items()):
 
         # Build (initialize) graph nodes and edges.
         candidate_graph.build(**build_arguments)
-        query_graph.trim(args.d_core_k, args.d_core_l)
+        candidate_graph.trim(d_core_k, d_core_l)
         # recalculate node weights using TextRank
         if args.textrank:
             candidate_graph.rank()
@@ -210,4 +214,4 @@ for topic_num, topic in tqdm(topics):  # tqdm(topics.items()):
 if args.year != 20:
     # Evaluate performance with trec_eval.
     os.system(
-        f"/home/janneke/anserini/tools/eval/trec_eval.9.0.4/trec_eval -c -M1000 -m map -m ndcg_cut -m P.10 resources/topics-and-qrels/{args.qrels} resources/output/{args.output}")
+        r"D:\Desktop\Study\Information_Retrieval\anserini\tools\eval\trec_eval.9.0.4\trec_eval.exe -c -M1000 -m map -m ndcg_cut -m P.10 resources/topics-and-qrels/{} resources/output/{}".format(args.qrels, args.output))
