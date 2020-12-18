@@ -80,8 +80,8 @@ class DCoreComparator(InformalGraphComparatorInterface):
 
         similarity_score = self.similarity(nodes_a, edges_a, nodes_b, edges_b, common_nodes,
                                                                       common_edges, node_edge_l)
-
+        similarity_percentage = 1 - novelty_percentage
         novelty_score, diversity_type = self.novelty(graph_b, graph_a, common_nodes)
         novelty_score = float(novelty_percentage * novelty_score)
         # print("result of comparison", similarity_weight * similarity_score + novelty_weight * novelty_score)
-        return (1 - novelty_percentage) * similarity_score + novelty_score, diversity_type
+        return similarity_percentage * similarity_score + novelty_score, diversity_type
