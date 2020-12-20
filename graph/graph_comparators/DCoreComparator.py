@@ -29,20 +29,15 @@ class DCoreComparator(InformalGraphComparatorInterface):
         return nodes + edges
 
     def novelty(self, que_graph, can_graph, common_nodes) -> float:
-        # determine weight threshold! to be important node
         # for edge in candidate graph sum all weights
         # sum indegrees of novel nodes
         new_info = {}
-
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", category=RuntimeWarning)
-            weight_threshold = np.mean(list(can_graph.edges.values()))
 
         i = 0
         added_nodes = []
         for edge, weight in can_graph.edges.items():
             # overlap should be 1, meaning there is exactly 1 node in common nodes.
-            if len(set(edge) & set(common_nodes)) == 1 and weight > weight_threshold:
+            if len(set(edge) & set(common_nodes)) == 1:
                 new_node = np.setdiff1d(edge, common_nodes)[0]
                 if new_node not in added_nodes:
                     i += 1
@@ -83,5 +78,6 @@ class DCoreComparator(InformalGraphComparatorInterface):
         similarity_percentage = 1 - novelty_percentage
         novelty_score, diversity_type = self.novelty(graph_b, graph_a, common_nodes)
         novelty_score = float(novelty_percentage * novelty_score)
-        # print("result of comparison", similarity_weight * similarity_score + novelty_weight * novelty_score)
-        return similarity_percentage * similarity_score + novelty_score, diversity_type
+        similarity_score = float(similarity_percentage * similarity_score)
+        print("result of comparison {} {}".format(similarity_score, novelty_score))
+        return similarity_score + novelty_score, diversity_type
